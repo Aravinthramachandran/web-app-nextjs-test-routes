@@ -1,12 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
-
 export default async function Data() {
   console.log("Data page is being rendered");
 
-  const user = await prisma.user.findFirst({
+  const user = await prisma.user.findUnique({
     where: {
       email: "test@test.com",
     },

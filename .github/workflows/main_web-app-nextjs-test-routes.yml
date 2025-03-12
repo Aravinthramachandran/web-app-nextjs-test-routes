@@ -59,4 +59,4 @@ jobs:
           app-name: "web-app-nextjs-test-routes"
           slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1A885579D1744F5E8C23627177ECFF22 }}
-          package: release.zip
+          package: .

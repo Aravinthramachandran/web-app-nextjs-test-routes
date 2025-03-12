@@ -1,31 +1,36 @@
-import { prisma } from "@/lib/prisma";
-import Link from "next/link";
+"use client";
 
+import { useAction } from "next-safe-action/hooks";
+import Link from "next/link";
+import { user } from "./user-action";
 export const dynamic = "force-dynamic";
 
-export default async function Data() {
-  console.log("Data page is being rendered");
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: "test@test.com",
-    },
-  });
+export default function Data() {
+  const { execute, result } = useAction(user);
 
   return (
-    <>
-      <div className='flex items-center justify-items-center  p-8 pb-20 gap-9  sm:p-20 font-[family-name:var(--font-geist-sans)]'>
+    <div className='flex flex-col  gap-9  sm:p-20 font-[family-name:var(--font-geist-sans)]'>
+      <div className='flex items-center justify-items-center  gap-9 '>
         <Link href='/'>Home</Link>
         <Link href='/private'>Private</Link>
         <Link href='/public'>Public</Link>
       </div>
 
-      <div className='flex items-center justify-items-center  p-8 pb-20 gap-9  sm:p-20 font-[family-name:var(--font-geist-sans)]'>
+      <button
+        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded '
+        onClick={() => {
+          execute();
+        }}
+      >
+        get user
+      </button>
+
+      {result && (
         <div>
-          <h1>Received from Database:</h1>
-          <pre>{JSON.stringify(user, null, 2)}</pre>
+          <h1>Received from Database</h1>
+          <pre>{JSON.stringify(result, null, 2)}</pre>
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 }

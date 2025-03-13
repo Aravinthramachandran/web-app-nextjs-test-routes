@@ -36,6 +36,7 @@ export default async function Private() {
       <p>User ID: {userId}</p>
       <p>Roles: {roles.join(", ")}</p>
       <p>User Agent: {userAgent}</p>
+      <p>Access Token: {token}</p>
 
       <div>
         <h1>Headers List</h1>

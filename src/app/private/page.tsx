@@ -26,7 +26,7 @@ export default async function Private() {
     clientPrincipal = JSON.parse(decodedJson);
 
     // Extract roles if available
-    const roless =
+    roless =
       clientPrincipal?.claims
         ?.filter((c: any) => c.typ.includes("role")) // Role claim
         ?.map((c: any) => c.val) || [];

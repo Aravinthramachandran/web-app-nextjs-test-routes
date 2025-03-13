@@ -15,6 +15,16 @@ export default async function Private() {
   const token =
     headersList.get("x-ms-token-aad-access-token") || "❌ No Access Token";
 
+  const encodedPrincipal = headersList.get("x-ms-client-principal");
+
+  let clientPrincipal = null;
+  if (encodedPrincipal) {
+    const decodedJson = Buffer.from(encodedPrincipal, "base64").toString(
+      "utf-8"
+    );
+    clientPrincipal = JSON.parse(decodedJson);
+  }
+
   // Redirect if unauthenticated
   if (user === "❌ Not Authenticated") {
     return (
@@ -43,6 +53,11 @@ export default async function Private() {
         <pre>
           {JSON.stringify(Object.fromEntries(headersList.entries()), null, 2)}
         </pre>
+      </div>
+
+      <div>
+        <h1>Decoded Client Principal</h1>
+        <pre>{JSON.stringify(clientPrincipal, null, 2)}</pre>
       </div>
     </div>
   );

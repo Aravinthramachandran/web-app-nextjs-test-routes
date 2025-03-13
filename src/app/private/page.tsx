@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 
 export default async function Private() {
-  const headersList = headers();
+  const headersList = await headers();
 
   // Fetch user details
   const user =
@@ -12,9 +12,8 @@ export default async function Private() {
     "❌ No Roles",
   ];
   const userAgent = headersList.get("user-agent") || "Unknown";
-
-  // Debugging: Log headers to console
-  console.log("Headers:", headersList);
+  const token =
+    headersList.get("x-ms-token-aad-access-token") || "❌ No Access Token";
 
   // Redirect if unauthenticated
   if (user === "❌ Not Authenticated") {
@@ -37,6 +36,13 @@ export default async function Private() {
       <p>User ID: {userId}</p>
       <p>Roles: {roles.join(", ")}</p>
       <p>User Agent: {userAgent}</p>
+
+      <div>
+        <h1>Headers List</h1>
+        <pre>
+          {JSON.stringify(Object.fromEntries(headersList.entries()), null, 2)}
+        </pre>
+      </div>
     </div>
   );
 }

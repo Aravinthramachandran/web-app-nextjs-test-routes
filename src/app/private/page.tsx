@@ -17,12 +17,19 @@ export default async function Private() {
 
   const encodedPrincipal = headersList.get("x-ms-client-principal");
 
+  let roless = ["❌ No Roles"];
   let clientPrincipal = null;
   if (encodedPrincipal) {
     const decodedJson = Buffer.from(encodedPrincipal, "base64").toString(
       "utf-8"
     );
     clientPrincipal = JSON.parse(decodedJson);
+
+    // Extract roles if available
+    const roless =
+      clientPrincipal?.claims
+        ?.filter((c: any) => c.typ.includes("role")) // Role claim
+        ?.map((c: any) => c.val) || [];
   }
 
   // Redirect if unauthenticated
@@ -47,6 +54,7 @@ export default async function Private() {
       <p>Roles: {roles.join(", ")}</p>
       <p>User Agent: {userAgent}</p>
       <p>Access Token: {token}</p>
+      <p>Roless: {roless.join(", ")}</p>
 
       <div>
         <h1>Headers List</h1>
